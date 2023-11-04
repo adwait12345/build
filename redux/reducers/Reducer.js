@@ -10,7 +10,7 @@ image:[]
 
 
 export const ImageReducer = (state = initialState, action) => {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case ActionTypes.SET_IMAGE:
             return { ...state, image: action.payload };

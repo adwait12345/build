@@ -24,6 +24,8 @@ export function InputForm() {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
 
   const [loading, setLoading] = useState<Boolean>(false);
+  const [error, setError] = useState<Boolean>(false);
+  
 
     const removeFile = (file:any) => () => {
       console.log("removeFile...");
@@ -63,18 +65,21 @@ export function InputForm() {
 
       const results = axios({
         method: "put",
-        url: `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
+        url: `https://b9uidl--2020bec067.repl.co/user/${res.data[0]._id}`,
         data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+       
       })
         .then(function (response) {
           //handle success
           console.log(response);
           setLoading(false);
+
         })
         .catch(function (response) {
           //handle error
           console.log(response);
+          //  setError(true);
+
         });
       console.log("results", results);
 
@@ -85,7 +90,7 @@ export function InputForm() {
         method: "post",
         url: `https://buidl--2020bec067.repl.co/user`,
         data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+       
       })
         .then(function (response) {
           //handle success
@@ -94,6 +99,7 @@ export function InputForm() {
         })
         .catch(function (response) {
           //handle error
+          // setError(true)
           console.log(response);
         });
       console.log("results", results);
@@ -194,7 +200,12 @@ export function InputForm() {
           </div>
         )}
       </div>
-
+      <div className="">
+        {
+          error &&
+          <p>something went wrong</p>
+        }
+      </div>
       <div className="w-full flex items-end justify-end gap-3">
         <DialogClose>
           {" "}
