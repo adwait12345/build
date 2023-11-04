@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DialogDemo } from "../modal";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Dialog2 } from "../modal/index2";
 
 type Response = {
   avatar: string;
@@ -24,7 +25,10 @@ export default function Form() {
     _id: "",
   });
 
-
+  useEffect(() => {
+    fetcher();
+  }, []);
+  
   const fetcher = async () => {
     const res = await axios.get("https://buidl--2020bec067.repl.co/user");
     setData(res.data[0]);
@@ -37,9 +41,7 @@ export default function Form() {
     console.log(res);
   };
 
-  useEffect(() => {
-    fetcher();
-  }, []);
+
 
 
   return (
@@ -48,13 +50,23 @@ export default function Form() {
         <div className="w-[550px] h-[300px] flex items-center justify-center border-[1px] border-[#d6d6d6] rounded-3xl">
           <div className="flex flex-col w-3/4 gap-5">
             <div className="flex items-start gap-3 ">
-              <img
-                className=" object-cover w-24 h-24 rounded-2xl border-[1px]"
-                src={data?.avatar}
-                alt=""
-                width={100}
-                height={100}
-              />
+              {data == null ? (
+                <img
+                  className=" object-cover w-24 h-24 rounded-2xl border-[1px]"
+                  src='/dummy.png'
+                  alt=""
+                  width={100}
+                  height={100}
+                />
+              ) : (
+                <img
+                  className=" object-cover w-24 h-24 rounded-2xl border-[1px]"
+                  src={data?.avatar}
+                  alt=""
+                  width={100}
+                  height={100}
+                />
+              )}
 
               <div className="flex flex-col gap-[5px] ">
                 <h1 className=" font-extrabold">Profile Picture</h1>
@@ -62,7 +74,7 @@ export default function Form() {
                   We support PNGs, JPEGs under 10MB
                 </p>
                 <div className="flex gap-3">
-                  <DialogDemo />
+                  <DialogDemo  />
                   <Button variant="outline" className="px-3" onClick={Delete}>
                     <RiDeleteBinLine />
                   </Button>
@@ -75,9 +87,8 @@ export default function Form() {
               <Button className="px-8" variant="outline">
                 Cancel
               </Button>
-              <Button className="px-8" variant="default">
-                Update
-              </Button>
+                <Dialog2/>
+           
             </div>
           </div>
         </div>

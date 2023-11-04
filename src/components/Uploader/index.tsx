@@ -1,23 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+
 import { FiUploadCloud } from "react-icons/fi";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { useCallback, useEffect, useState } from "react";
-import { MyDropzone } from "../DropZone";
 
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -26,8 +15,14 @@ import { DialogClose } from "@radix-ui/react-dialog";
 
 export function InputForm() {
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
-   
-  const [loading, setLoading]= useState<Boolean>(false)
+
+  const [loading, setLoading] = useState<Boolean>(false);
+
+    const removeFile = (file:any) => () => {
+      console.log("removeFile...");
+      acceptedFiles.splice(acceptedFiles.indexOf(file), 1);
+      console.log(acceptedFiles);
+    };
 
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
@@ -40,13 +35,11 @@ export function InputForm() {
     file.readAsDataURL(acceptedFiles[0]);
   }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
+  const { fileRejections,acceptedFiles, getRootProps, getInputProps, isDragActive } =
     useDropzone({ onDrop });
 
-  const [file, setFile] = useState<Boolean | undefined>();
 
   async function onSubmit(e: React.SyntheticEvent) {
-    
     if (typeof acceptedFiles[0] === "undefined") return;
 
     const res = await axios.get("https://buidl--2020bec067.repl.co/user");
@@ -58,36 +51,52 @@ export function InputForm() {
 
     if (res.data[0]) {
       setLoading(true);
-      const results = await fetch(
-        `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      ).then((r) => r.json());
-      setLoading(false)
+
+      const results = axios({
+        method: "put",
+        url: `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          setLoading(false);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
       console.log("results", results);
 
       return;
     } else if (res.data[0] == undefined) {
       setLoading(true);
-      const results = await fetch("https://buidl--2020bec067.repl.co/user", {
-        method: "POST",
-        body: formData,
-      }).then((r) => r.json());
+      const results = axios({
+        method: "post",
+        url: `https://buidl--2020bec067.repl.co/user`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          setLoading(false);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
       console.log("results", results);
-      setLoading(false)
+      setLoading(false);
 
       return;
     }
   }
 
-  console.log(loading)
 
   return (
     <form onSubmit={onSubmit} className=" space-y-6">
-      {/* <Input type="file" placeholder="shadcn" onChange={handleOnChange} /> */}
-
       <div
         {...getRootProps()}
         className=" w-full flex items-center justify-center border-dashed border-2 h-[150px]  rounded-2xl cursor-pointe mt-3"
@@ -144,11 +153,19 @@ export function InputForm() {
                         <div className="flex flex-col items-center">
                           <div className="my-3">
                             {" "}
-                            <img
-                              src={preview as string}
-                              className=" w-16 h-16 rounded-md object-cover grayscale"
-                              alt="Upload preview"
-                            />
+                            <div className="flex flex-col w-fit">
+                              <div className="w-full flex items-end justify-end">
+                                {" "}
+                                <button className=" z-50 absolute -mb-2 -mr-2" onClick={removeFile}><IoIosCloseCircleOutline /></button>
+                              </div>
+                              <div className="">
+                                <img
+                                  src={preview as string}
+                                  className=" w-16 h-16 rounded-md object-cover grayscale"
+                                  alt="Upload preview"
+                                />
+                              </div>
+                            </div>
                           </div>
                           <div className=" text-center">
                             <h2 className=" font-semibold text-[14px]">
@@ -170,10 +187,10 @@ export function InputForm() {
       </div>
 
       <div className="w-full flex items-end justify-end gap-3">
-     <DialogClose>   <Button variant="outline">
+        <DialogClose>
           {" "}
-          Cancel
-        </Button></DialogClose>
+          <Button variant="outline"> Cancel</Button>
+        </DialogClose>
         <Button type="submit" disabled={acceptedFiles[0] == null}>
           Submit
         </Button>
