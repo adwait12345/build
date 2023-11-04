@@ -65,7 +65,7 @@ export function InputForm() {
 
       const results = axios({
         method: "put",
-        url: `https://b9uidl--2020bec067.repl.co/user/${res.data[0]._id}`,
+        url: `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
