@@ -67,7 +67,7 @@ export function InputForm() {
         method: "put",
         url: `https://b9uidl--2020bec067.repl.co/user/${res.data[0]._id}`,
         data: formData,
-       
+        headers: { "Content-Type": "multipart/form-data" },
       })
         .then(function (response) {
           //handle success
@@ -78,7 +78,7 @@ export function InputForm() {
         .catch(function (response) {
           //handle error
           console.log(response);
-          //  setError(true);
+           setError(true);
 
         });
       console.log("results", results);
@@ -90,7 +90,7 @@ export function InputForm() {
         method: "post",
         url: `https://buidl--2020bec067.repl.co/user`,
         data: formData,
-       
+        headers: { "Content-Type": "multipart/form-data" },
       })
         .then(function (response) {
           //handle success
@@ -99,7 +99,7 @@ export function InputForm() {
         })
         .catch(function (response) {
           //handle error
-          // setError(true)
+          setError(true)
           console.log(response);
         });
       console.log("results", results);
@@ -171,7 +171,12 @@ export function InputForm() {
                             <div className="flex flex-col w-fit">
                               <div className="w-full flex items-end justify-end">
                                 {" "}
-                                <button className=" z-50 absolute -mb-2 -mr-2" onClick={removeFile}><IoIosCloseCircleOutline /></button>
+                                <button
+                                  className=" z-50 absolute -mb-2 -mr-2"
+                                  onClick={removeFile}
+                                >
+                                  <IoIosCloseCircleOutline />
+                                </button>
                               </div>
                               <div className="">
                                 <img
@@ -201,10 +206,14 @@ export function InputForm() {
         )}
       </div>
       <div className="">
-        {
-          error &&
-          <p>something went wrong</p>
-        }
+        {error && (
+          <div className=" py-4 px-3 border-2 border-[#fd4747] rounded-lg">
+            <h1 className="text-[#fd4747] text-[15px]">
+              Sorry, something went wrong!
+            </h1>
+            <p className="text-[#fd4747] text-[11px]">Please try again.</p>
+          </div>
+        )}
       </div>
       <div className="w-full flex items-end justify-end gap-3">
         <DialogClose>
