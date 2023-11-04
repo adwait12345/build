@@ -22,7 +22,7 @@ export function Dialog2() {
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="default" className="flex gap-3">
-            Update Image
+            Update 
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[650px]">

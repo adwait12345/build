@@ -1,6 +1,5 @@
 "use client";
 
-
 import { FiUploadCloud } from "react-icons/fi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
@@ -13,26 +12,18 @@ import axios from "axios";
 import Loader from "../loader";
 import { DialogClose } from "@radix-ui/react-dialog";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setImage } from "../../../redux/actions/action";
-
 
 export function InputForm() {
-
-
-    
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
 
   const [loading, setLoading] = useState<Boolean>(false);
   const [error, setError] = useState<Boolean>(false);
-  
 
-    const removeFile = (file:any) => () => {
-      console.log("removeFile...");
-      acceptedFiles.splice(acceptedFiles.indexOf(file), 1);
-      console.log(acceptedFiles);
-    };
-
+  const removeFile = (file: any) => () => {
+    console.log("removeFile...");
+    acceptedFiles.splice(acceptedFiles.indexOf(file), 1);
+    console.log(acceptedFiles);
+  };
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
     const file = new FileReader();
@@ -44,15 +35,11 @@ export function InputForm() {
     file.readAsDataURL(acceptedFiles[0]);
   }, []);
 
-  const { fileRejections,acceptedFiles, getRootProps, getInputProps, isDragActive } =
+  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
     useDropzone({ onDrop });
-
 
   async function onSubmit(e: React.SyntheticEvent) {
     if (typeof acceptedFiles[0] === "undefined") return;
-    
-  
-
     const res = await axios.get("https://buidl--2020bec067.repl.co/user");
 
     const formData = new FormData();
@@ -60,32 +47,11 @@ export function InputForm() {
     formData.append("image", acceptedFiles[0]);
     formData.append("name", "adwait");
 
-    if (res.data[0]) {
+    if (res.data[0] == null) {
+      // console.log("post");
+
       setLoading(true);
 
-      const results = axios({
-        method: "put",
-        url: `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-        .then(function (response) {
-          //handle success
-          console.log(response);
-          setLoading(false);
-
-        })
-        .catch(function (response) {
-          //handle error
-          console.log(response);
-           setError(true);
-
-        });
-      console.log("results", results);
-
-      return;
-    } else if (res.data[0] == undefined) {
-      setLoading(true);
       const results = axios({
         method: "post",
         url: `https://buidl--2020bec067.repl.co/user`,
@@ -99,16 +65,42 @@ export function InputForm() {
         })
         .catch(function (response) {
           //handle error
-          setError(true)
+          setLoading(false);
+          setError(true);
           console.log(response);
         });
       console.log("results", results);
-      setLoading(false);
+
+      return;
+    }
+
+    if (res.data[0]) {
+      setLoading(true);
+      console.log("put");
+
+      const results = axios({
+        method: "put",
+        url: `https://buidl--2020bec067.repl.co/user/${res.data[0]._id}`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          setLoading(false);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+          setLoading(false);
+          setError(true);
+        });
+      console.log("results", results);
 
       return;
     }
   }
-
+  console.log(loading);
 
   return (
     <form onSubmit={onSubmit} className=" space-y-6">

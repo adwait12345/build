@@ -18,7 +18,6 @@ type Response = {
 
 export default function Form() {
 
-  
 
   let [data, setData] = useState<Response>({
     avatar: "dummy.png",
