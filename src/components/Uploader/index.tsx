@@ -13,7 +13,14 @@ import axios from "axios";
 import Loader from "../loader";
 import { DialogClose } from "@radix-ui/react-dialog";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setImage } from "../../../redux/actions/action";
+
+
 export function InputForm() {
+
+
+    
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
 
   const [loading, setLoading] = useState<Boolean>(false);
@@ -41,6 +48,8 @@ export function InputForm() {
 
   async function onSubmit(e: React.SyntheticEvent) {
     if (typeof acceptedFiles[0] === "undefined") return;
+    
+  
 
     const res = await axios.get("https://buidl--2020bec067.repl.co/user");
 

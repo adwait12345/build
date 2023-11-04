@@ -17,6 +17,9 @@ type Response = {
 };
 
 export default function Form() {
+
+  
+
   let [data, setData] = useState<Response>({
     avatar: "dummy.png",
     cloudinary_id: "",
@@ -84,7 +87,7 @@ export default function Form() {
             <hr />
 
             <div className="w-full flex justify-end items-center gap-4">
-              <Button className="px-8" variant="outline">
+              <Button className="px-8" variant="outline" >
                 Cancel
               </Button>
                 <Dialog2/>
