@@ -17,8 +17,6 @@ type Response = {
 };
 
 export default function Form() {
-
-
   let [data, setData] = useState<Response>({
     avatar: "dummy.png",
     cloudinary_id: "",
@@ -30,7 +28,7 @@ export default function Form() {
   useEffect(() => {
     fetcher();
   }, []);
-  
+
   const fetcher = async () => {
     const res = await axios.get("https://buidl--2020bec067.repl.co/user");
     setData(res.data[0]);
@@ -43,9 +41,6 @@ export default function Form() {
     console.log(res);
   };
 
-
-
-
   return (
     <div className="">
       <div className=" w-full h-screen flex flex-col items-center justify-center">
@@ -55,7 +50,7 @@ export default function Form() {
               {data == null ? (
                 <img
                   className=" object-cover w-24 h-24 rounded-2xl border-[1px]"
-                  src='/dummy.png'
+                  src="/dummy.png"
                   alt=""
                   width={100}
                   height={100}
@@ -76,7 +71,7 @@ export default function Form() {
                   We support PNGs, JPEGs under 10MB
                 </p>
                 <div className="flex gap-3">
-                  <DialogDemo  />
+                  <DialogDemo />
                   <Button variant="outline" className="px-3" onClick={Delete}>
                     <RiDeleteBinLine />
                   </Button>
@@ -86,11 +81,10 @@ export default function Form() {
             <hr />
 
             <div className="w-full flex justify-end items-center gap-4">
-              <Button className="px-8" variant="outline" >
+              <Button className="px-8" variant="outline">
                 Cancel
               </Button>
-                <Dialog2/>
-           
+              <Dialog2 />
             </div>
           </div>
         </div>

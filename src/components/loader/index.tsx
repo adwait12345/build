@@ -6,7 +6,7 @@ export default function Loader() {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setValue((v) => (v >= 100 ? 0 : v + 70));
+      setValue((v) => (v >= 100 ? 0 : v + 20));
     }, 500);
 
     return () => clearInterval(interval);
