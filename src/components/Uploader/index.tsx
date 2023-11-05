@@ -208,9 +208,8 @@ export function InputForm() {
         )}
       </div>
       <div className="w-full flex items-end justify-end gap-3">
-        <DialogClose>
-          {" "}
-          <Button variant="outline"> Cancel</Button>
+        <DialogClose  className="py-[7px] px-4 border-[1px] rounded-lg">
+           Cancel
         </DialogClose>
         <Button type="submit" disabled={acceptedFiles[0] == null}>
           Submit
